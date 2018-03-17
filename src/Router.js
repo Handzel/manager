@@ -8,19 +8,18 @@ import EmployeeCreate from './components/EmployeeCreate';
 
 const RouterComponent = () => {
   return (
-    <Router>
-      <Scene key="root" hideNavBar>
+    <Router sceneStyle={{ paddingTop: 0 }}>
+      <Scene key="root" hideNavBar="true">
         <Scene key="auth">
           <Scene 
             key="login" 
             component={LoginForm} 
             title="Please Login" 
-            style={styles.sceneTextStyle} 
           />
         </Scene>
+        
         <Scene key="main">
           <Scene
-            style={styles.sceneTextStyle}
             rightTitle="Add"
             onRight={() => Actions.employeeCreate()}
             key="employeeList" 
@@ -29,7 +28,6 @@ const RouterComponent = () => {
             initial
           />
           <Scene 
-            style={styles.sceneTextStyle}
             key="employeeCreate" 
             component={EmployeeCreate} 
             title="Create Employee" 
@@ -40,12 +38,12 @@ const RouterComponent = () => {
   );
 };
 
-const styles = {
-  sceneTextStyle: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: 'blue'
-  }
-};
+// const styles = {
+//   sceneTextStyle: {
+//     fontSize: 20,
+//     alignSelf: 'center',
+//     color: 'blue'
+//   }
+// };
 
 export default RouterComponent;
