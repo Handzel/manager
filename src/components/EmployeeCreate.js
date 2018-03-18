@@ -9,7 +9,7 @@ class EmployeeCreate extends Component {
   onButtonPress() {
     const { name, phone, shift } = this.props;
 
-    this.props.employeeCreate({ name, phone, shift });
+    this.props.employeeCreate({ name, phone, shift: shift || 'Monday' });
   }
   
   render() { 
@@ -45,7 +45,7 @@ class EmployeeCreate extends Component {
           <Text style={styles.pickerTextStyle}>Shift</Text>
           <Picker
             // By default Picker width is set to 0, need to expand all area -> flex: 1
-            //style={{ flex: 1 }} 
+            //style={{ flex: 1 }} -> but it messed up when i OVERRIDE style so...
             selectedValue={this.props.shift}
             onValueChange={value => this.props.employeeUpdate({ prop: 'shift', value })}
           >
