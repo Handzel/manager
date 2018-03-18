@@ -1,8 +1,10 @@
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 import {
-  EMPLOYEE_UPDATE,
+  EMPLOYEE_UPDATE, 
   EMPLOYEE_CREATE
 } from './types';
+
 
 // One action creator for multiple actions from form
 export const employeeUpdate = ({ prop, value }) => {
@@ -19,13 +21,15 @@ export const employeeUpdate = ({ prop, value }) => {
 
 export const employeeCreate = ({ name, phone, shift }) => {
   const { currentUser } = firebase.auth();
-
-  firebase.database().ref(`/users/${currentUser.uid}/employees`)
-    .push({ name, phone, shift });
-  
-  return {
-    type: EMPLOYEE_CREATE,
-    payload: { name, phone, shift }
+  // we dont really need to return anything
+  // we will use redux-thunk without dispatch to break the rules
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/employees`)
+      .push({ name, phone, shift })
+      .then(() => {
+        dispatch({ type: EMPLOYEE_CREATE });
+        Actions.pop(); //Actions.pop() -> navigate back
+      }); 
   };
 };
 
