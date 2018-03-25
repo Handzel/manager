@@ -1,13 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { ListView, View, Text } from 'react-native';
 import { employeesFetch } from '../actions';
 
 class EmployeeList extends Component {
   componentWillMount() {
+    // this is async, may take some time, thats why we use another lifecycle 
+    // method below. 
     this.props.employeesFetch();
+
+    this.createDataSource(this.props);
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    // nextPropos -> are the next set of props that this component 
+    // will be rendered with
+    // this.props is still the old set of props
+    // Method to reacting to any change in props object
+
+    this.createDataSource(nextProps);
+  }
+
+  // helper method for ds
+  createDataSource({ employees }) {
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 != r2
+    });
+
+    this.dataSource = ds.cloneWithRows(employees);
+  }
+
   render() { 
     return (
       <View>
@@ -20,5 +42,7 @@ class EmployeeList extends Component {
     );
   }
 }
+
+
 
 export default connect(null, { employeesFetch })(EmployeeList);
