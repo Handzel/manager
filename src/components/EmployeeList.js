@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, View, Text } from 'react-native';
+import { ListView } from 'react-native';
 import { employeesFetch } from '../actions';
+import ListItem from './ListItem';
 
 class EmployeeList extends Component {
   componentWillMount() {
@@ -25,22 +26,24 @@ class EmployeeList extends Component {
   // helper method for ds
   createDataSource({ employees }) {
     const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 != r2
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
     // cloneWithRows works with arrays not Objects -> Object is being returned 
     // from firebase by default. Solution -> lodash
     this.dataSource = ds.cloneWithRows(employees);
   }
 
+  renderRow(employee) {
+    <ListItem employee={employee} />;
+  }
+
   render() { 
     return (
-      <View>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-      </View>
+      <ListView
+        enableEmptySections
+        dataSource={this.dataSource}
+        renderRow={this.renderRow} 
+      />
     );
   }
 }
